@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "event_artists",
+  "info": {
+    "singularName": "event-artist",
+    "pluralName": "event-artists",
+    "displayName": "Event Artist"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "role": {
+      "type": "string"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0,
+      "required": true
+    },
+    "event": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::event.event",
+      "inversedBy": "eventArtists"
+    },
+    "artist": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::artist.artist",
+      "inversedBy": "eventArtists",
+      "required": true
+    }
+  }
+}

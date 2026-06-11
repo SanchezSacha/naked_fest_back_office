@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "stand_events",
+  "info": {
+    "singularName": "stand-event",
+    "pluralName": "stand-events",
+    "displayName": "Stand Event"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "stand": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::stand.stand",
+      "inversedBy": "standEvents",
+      "required": true
+    },
+    "event": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::event.event",
+      "inversedBy": "standEvents"
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "kind": "collectionType",
+  "collectionName": "map_points",
+  "info": {
+    "singularName": "map-point",
+    "pluralName": "map-points",
+    "displayName": "Map Point"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "STAGE",
+        "STAND",
+        "FOOD",
+        "RESTROOM",
+        "ENTRANCE",
+        "INFO",
+        "FIRST_AID",
+        "EVENT",
+        "OTHER"
+      ],
+      "required": true
+    },
+    "latitude": {
+      "type": "float",
+      "required": true
+    },
+    "longitude": {
+      "type": "float",
+      "required": true
+    },
+    "icon": {
+      "type": "string"
+    },
+    "event": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::event.event",
+      "inversedBy": "mapPoints"
+    },
+    "location": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::location.location",
+      "inversedBy": "mapPoints"
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "kind": "collectionType",
+  "collectionName": "sponsors",
+  "info": {
+    "singularName": "sponsor",
+    "pluralName": "sponsors",
+    "displayName": "Sponsor"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true,
+      "unique": true
+    },
+    "tier": {
+      "type": "enumeration",
+      "enum": ["MAIN", "GOLD", "SILVER", "BRONZE", "PARTNER"],
+      "default": "PARTNER",
+      "required": true
+    },
+    "logoUrl": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "eventSponsors": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::event-sponsor.event-sponsor",
+      "mappedBy": "sponsor"
+    },
+    "stands": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::stand.stand",
+      "mappedBy": "sponsor"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "event_sponsors",
+  "info": {
+    "singularName": "event-sponsor",
+    "pluralName": "event-sponsors",
+    "displayName": "Event Sponsor"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "event": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::event.event",
+      "inversedBy": "eventSponsors"
+    },
+    "sponsor": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::sponsor.sponsor",
+      "inversedBy": "eventSponsors",
+      "required": true
+    }
+  }
+}

@@ -440,6 +440,469 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiArtistArtist extends Struct.CollectionTypeSchema {
+  collectionName: 'artists';
+  info: {
+    displayName: 'Artist';
+    pluralName: 'artists';
+    singularName: 'artist';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    bio: Schema.Attribute.Text;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    eventArtists: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::event-artist.event-artist'
+    >;
+    imageUrl: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::artist.artist'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'> &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    type: Schema.Attribute.Enumeration<['ARTIST', 'SPEAKER', 'HOST']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'ARTIST'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    website: Schema.Attribute.String;
+  };
+}
+
+export interface ApiEventArtistEventArtist extends Struct.CollectionTypeSchema {
+  collectionName: 'event_artists';
+  info: {
+    displayName: 'Event Artist';
+    pluralName: 'event-artists';
+    singularName: 'event-artist';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    artist: Schema.Attribute.Relation<'manyToOne', 'api::artist.artist'> &
+      Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    event: Schema.Attribute.Relation<'manyToOne', 'api::event.event'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::event-artist.event-artist'
+    > &
+      Schema.Attribute.Private;
+    order: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<0>;
+    publishedAt: Schema.Attribute.DateTime;
+    role: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiEventCategoryEventCategory
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'event_categories';
+  info: {
+    displayName: 'Event Category';
+    pluralName: 'event-categories';
+    singularName: 'event-category';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    events: Schema.Attribute.Relation<'oneToMany', 'api::event.event'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::event-category.event-category'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'> &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiEventSponsorEventSponsor
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'event_sponsors';
+  info: {
+    displayName: 'Event Sponsor';
+    pluralName: 'event-sponsors';
+    singularName: 'event-sponsor';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    event: Schema.Attribute.Relation<'manyToOne', 'api::event.event'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::event-sponsor.event-sponsor'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    sponsor: Schema.Attribute.Relation<'manyToOne', 'api::sponsor.sponsor'> &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiEventEvent extends Struct.CollectionTypeSchema {
+  collectionName: 'events';
+  info: {
+    displayName: 'Event';
+    pluralName: 'events';
+    singularName: 'event';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    capacity: Schema.Attribute.Integer;
+    category: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::event-category.event-category'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    endsAt: Schema.Attribute.DateTime;
+    eventArtists: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::event-artist.event-artist'
+    >;
+    eventSponsors: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::event-sponsor.event-sponsor'
+    >;
+    genre: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::music-genre.music-genre'
+    >;
+    imageUrl: Schema.Attribute.String;
+    isFeatured: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::event.event'> &
+      Schema.Attribute.Private;
+    location: Schema.Attribute.Relation<'manyToOne', 'api::location.location'>;
+    mapPoints: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::map-point.map-point'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    standEvents: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::stand-event.stand-event'
+    >;
+    startsAt: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    status_event: Schema.Attribute.Enumeration<
+      ['DRAFT', 'PUBLISHED', 'CANCELLED', 'ARCHIVED']
+    > &
+      Schema.Attribute.DefaultTo<'DRAFT'>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    type: Schema.Attribute.Enumeration<
+      ['CONCERT', 'CONFERENCE', 'ACTIVITY', 'STAND', 'OTHER']
+    > &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiLocationLocation extends Struct.CollectionTypeSchema {
+  collectionName: 'locations';
+  info: {
+    displayName: 'Location';
+    pluralName: 'locations';
+    singularName: 'location';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    address: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    events: Schema.Attribute.Relation<'oneToMany', 'api::event.event'>;
+    latitude: Schema.Attribute.Float;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::location.location'
+    > &
+      Schema.Attribute.Private;
+    longitude: Schema.Attribute.Float;
+    mapPoints: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::map-point.map-point'
+    >;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'> &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    stands: Schema.Attribute.Relation<'oneToMany', 'api::stand.stand'>;
+    type: Schema.Attribute.Enumeration<
+      [
+        'STAGE',
+        'STAND',
+        'ENTRANCE',
+        'RESTROOM',
+        'FOOD',
+        'INFO',
+        'FIRST_AID',
+        'OTHER',
+      ]
+    > &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiMapPointMapPoint extends Struct.CollectionTypeSchema {
+  collectionName: 'map_points';
+  info: {
+    displayName: 'Map Point';
+    pluralName: 'map-points';
+    singularName: 'map-point';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    event: Schema.Attribute.Relation<'manyToOne', 'api::event.event'>;
+    icon: Schema.Attribute.String;
+    latitude: Schema.Attribute.Float & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::map-point.map-point'
+    > &
+      Schema.Attribute.Private;
+    location: Schema.Attribute.Relation<'manyToOne', 'api::location.location'>;
+    longitude: Schema.Attribute.Float & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    type: Schema.Attribute.Enumeration<
+      [
+        'STAGE',
+        'STAND',
+        'FOOD',
+        'RESTROOM',
+        'ENTRANCE',
+        'INFO',
+        'FIRST_AID',
+        'EVENT',
+        'OTHER',
+      ]
+    > &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiMusicGenreMusicGenre extends Struct.CollectionTypeSchema {
+  collectionName: 'music_genres';
+  info: {
+    displayName: 'Music Genre';
+    pluralName: 'music-genres';
+    singularName: 'music-genre';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    events: Schema.Attribute.Relation<'oneToMany', 'api::event.event'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::music-genre.music-genre'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'> &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSponsorSponsor extends Struct.CollectionTypeSchema {
+  collectionName: 'sponsors';
+  info: {
+    displayName: 'Sponsor';
+    pluralName: 'sponsors';
+    singularName: 'sponsor';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    eventSponsors: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::event-sponsor.event-sponsor'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::sponsor.sponsor'
+    > &
+      Schema.Attribute.Private;
+    logoUrl: Schema.Attribute.String;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'> &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    stands: Schema.Attribute.Relation<'oneToMany', 'api::stand.stand'>;
+    tier: Schema.Attribute.Enumeration<
+      ['MAIN', 'GOLD', 'SILVER', 'BRONZE', 'PARTNER']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'PARTNER'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    website: Schema.Attribute.String;
+  };
+}
+
+export interface ApiStandEventStandEvent extends Struct.CollectionTypeSchema {
+  collectionName: 'stand_events';
+  info: {
+    displayName: 'Stand Event';
+    pluralName: 'stand-events';
+    singularName: 'stand-event';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    event: Schema.Attribute.Relation<'manyToOne', 'api::event.event'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::stand-event.stand-event'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    stand: Schema.Attribute.Relation<'manyToOne', 'api::stand.stand'> &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiStandStand extends Struct.CollectionTypeSchema {
+  collectionName: 'stands';
+  info: {
+    displayName: 'Stand';
+    pluralName: 'stands';
+    singularName: 'stand';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    imageUrl: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::stand.stand'> &
+      Schema.Attribute.Private;
+    location: Schema.Attribute.Relation<'manyToOne', 'api::location.location'>;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'> &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    sponsor: Schema.Attribute.Relation<'manyToOne', 'api::sponsor.sponsor'>;
+    standEvents: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::stand-event.stand-event'
+    >;
+    status: Schema.Attribute.Enumeration<['ACTIVE', 'INACTIVE']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'ACTIVE'>;
+    type: Schema.Attribute.Enumeration<
+      ['FOOD', 'DRINK', 'MERCH', 'INFO', 'SPONSOR', 'OTHER']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'OTHER'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -951,6 +1414,17 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::artist.artist': ApiArtistArtist;
+      'api::event-artist.event-artist': ApiEventArtistEventArtist;
+      'api::event-category.event-category': ApiEventCategoryEventCategory;
+      'api::event-sponsor.event-sponsor': ApiEventSponsorEventSponsor;
+      'api::event.event': ApiEventEvent;
+      'api::location.location': ApiLocationLocation;
+      'api::map-point.map-point': ApiMapPointMapPoint;
+      'api::music-genre.music-genre': ApiMusicGenreMusicGenre;
+      'api::sponsor.sponsor': ApiSponsorSponsor;
+      'api::stand-event.stand-event': ApiStandEventStandEvent;
+      'api::stand.stand': ApiStandStand;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
