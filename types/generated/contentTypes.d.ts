@@ -601,6 +601,8 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    day: Schema.Attribute.Enumeration<['VEN', 'SAM', 'DIM']> &
+      Schema.Attribute.Required;
     description: Schema.Attribute.Text & Schema.Attribute.Required;
     endsAt: Schema.Attribute.DateTime;
     eventArtists: Schema.Attribute.Relation<
@@ -611,11 +613,15 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::event-sponsor.event-sponsor'
     >;
+    featuredOnHomePages: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::home-page.home-page'
+    >;
     genre: Schema.Attribute.Relation<
       'manyToOne',
       'api::music-genre.music-genre'
     >;
-    imageUrl: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
     isFeatured: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<false>;
@@ -627,6 +633,7 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::map-point.map-point'
     >;
+    origin: Schema.Attribute.String & Schema.Attribute.DefaultTo<'FR'>;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     standEvents: Schema.Attribute.Relation<
@@ -643,6 +650,47 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
       ['CONCERT', 'CONFERENCE', 'ACTIVITY', 'STAND', 'OTHER']
     > &
       Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
+  collectionName: 'home_pages';
+  info: {
+    displayName: 'Home Page';
+    pluralName: 'home-pages';
+    singularName: 'home-page';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    edition: Schema.Attribute.String & Schema.Attribute.Required;
+    featuredEvents: Schema.Attribute.Relation<'manyToMany', 'api::event.event'>;
+    features: Schema.Attribute.JSON & Schema.Attribute.Required;
+    heroEyebrow: Schema.Attribute.String & Schema.Attribute.Required;
+    heroImage: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::home-page.home-page'
+    > &
+      Schema.Attribute.Private;
+    locationLabel: Schema.Attribute.String & Schema.Attribute.Required;
+    mapDescription: Schema.Attribute.Text & Schema.Attribute.Required;
+    mapImage: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    mapSubtitle: Schema.Attribute.String & Schema.Attribute.Required;
+    mapTitle: Schema.Attribute.String & Schema.Attribute.Required;
+    practicalInfos: Schema.Attribute.JSON & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    stats: Schema.Attribute.JSON & Schema.Attribute.Required;
+    tagline: Schema.Attribute.String & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1419,6 +1467,7 @@ declare module '@strapi/strapi' {
       'api::event-category.event-category': ApiEventCategoryEventCategory;
       'api::event-sponsor.event-sponsor': ApiEventSponsorEventSponsor;
       'api::event.event': ApiEventEvent;
+      'api::home-page.home-page': ApiHomePageHomePage;
       'api::location.location': ApiLocationLocation;
       'api::map-point.map-point': ApiMapPointMapPoint;
       'api::music-genre.music-genre': ApiMusicGenreMusicGenre;

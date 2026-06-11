@@ -1,0 +1,77 @@
+{
+  "kind": "singleType",
+  "collectionName": "home_pages",
+  "info": {
+    "singularName": "home-page",
+    "pluralName": "home-pages",
+    "displayName": "Home Page"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "heroEyebrow": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "edition": {
+      "type": "string",
+      "required": true
+    },
+    "tagline": {
+      "type": "string",
+      "required": true
+    },
+    "locationLabel": {
+      "type": "string",
+      "required": true
+    },
+    "heroImage": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "features": {
+      "type": "json",
+      "required": true
+    },
+    "stats": {
+      "type": "json",
+      "required": true
+    },
+    "featuredEvents": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::event.event",
+      "inversedBy": "featuredOnHomePages"
+    },
+    "mapTitle": {
+      "type": "string",
+      "required": true
+    },
+    "mapSubtitle": {
+      "type": "string",
+      "required": true
+    },
+    "mapDescription": {
+      "type": "text",
+      "required": true
+    },
+    "mapImage": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "practicalInfos": {
+      "type": "json",
+      "required": true
+    }
+  }
+}

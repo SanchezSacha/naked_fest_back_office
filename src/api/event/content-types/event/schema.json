@@ -50,11 +50,23 @@
       "type": "datetime",
       "required": true
     },
+    "day": {
+      "type": "enumeration",
+      "enum": ["VEN", "SAM", "DIM"],
+      "required": true
+    },
     "endsAt": {
       "type": "datetime"
     },
-    "imageUrl": {
-      "type": "string"
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "origin": {
+      "type": "string",
+      "default": "FR"
     },
     "capacity": {
       "type": "integer"
@@ -105,6 +117,12 @@
       "relation": "oneToMany",
       "target": "api::stand-event.stand-event",
       "mappedBy": "event"
+    },
+    "featuredOnHomePages": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::home-page.home-page",
+      "mappedBy": "featuredEvents"
     }
   }
 }
